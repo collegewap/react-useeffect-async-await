@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { useCallback, useEffect, useState } from "react";
 
 function App() {
+  const [imageUrl, setImageUrl] = useState();
+
+  const fetchCatImage = useCallback(async () => {
+    const response = await fetch("https://aws.random.cat/meow");
+    const data = await response.json();
+    setImageUrl(data.file);
+  }, []);
+
+  useEffect(() => {
+    fetchCatImage();
+  }, [fetchCatImage]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {imageUrl && (
+        <img src={imageUrl} alt="Random Cat" style={{ width: "300px" }} />
+      )}
     </div>
   );
 }
